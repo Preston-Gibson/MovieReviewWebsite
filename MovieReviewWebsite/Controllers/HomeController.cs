@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MovieReviewWebsite.Models;
@@ -29,16 +30,34 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult AddMovie()
     {
+        ViewBag.Categories = new SelectList(_context.Categories, "CategoryId", "Name");
+        ViewBag.Ratings = new SelectList(_context.Ratings, "RatingId", "Name");
+        ViewBag.Directors = _context.Directors.ToList();
         return View();
     }
 
     [HttpPost]
-    public IActionResult AddMovie(MovieReview movieReview)
+    public IActionResult AddMovie(Movie movie, int? directorId)
     {
-        _context.MovieReviews.Add(movieReview);
+        // Save Movie first
+        _context.Movies.Add(movie);
         _context.SaveChanges();
-        
-        return View();
+
+        // If a Director was selected, create MovieDirector relationship
+        if (directorId.HasValue)
+        {
+            var movieDirector = new MovieDirector
+            {
+                MovieId = movie.MovieId,
+                DirectorId = directorId.Value
+            };
+
+            _context.MovieDirectors.Add(movieDirector);
+        }
+
+        _context.SaveChanges();
+
+        return RedirectToAction("Index");
     }
     
 

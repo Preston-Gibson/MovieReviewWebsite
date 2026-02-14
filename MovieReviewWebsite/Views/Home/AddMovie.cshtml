@@ -1,28 +1,75 @@
-@model MovieReview
+@model Movie
 @{
     ViewData["Title"] = "Add Movie";
 }
 
 <h1>Add a Movie</h1>
 
-<form method="post">
-    <label asp-for="rating">Rating</label>
-    <select asp-for="rating">
-        <option>G</option>
-        <option>PG</option>
-        <option>PG-13</option>
-        <option>R</option>
-    </select>
-    <br/>
+<form asp-action="AddMovie" method="post">
 
-    <label asp-for="edited">Edited</label>
-    <input asp-for="edited" type="radio" value="true" id="editedTrue" />
-    <label for="editedTrue">True</label>
+    <div>
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
 
-    <input asp-for="edited" type="radio" value="false" id="editedFalse" />
-    <label for="editedFalse">False</label>
-    <br/>
+    <div>
+        <label asp-for="Year"></label>
+        <input asp-for="Year" class="form-control" />
+    </div>
 
-    <label asp-for="notes">Notes:</label><br/>
-    <textarea asp-for="notes" maxlength="25"></textarea>
+    <div>
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control">
+            <option value="">-- Select Category --</option>
+        </select>
+    </div>
+
+    <div>
+        <label asp-for="RatingId"></label>
+        <select asp-for="RatingId" asp-items="ViewBag.Ratings" class="form-control">
+            <option value="">-- Select Rating --</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="DirectorId">Director</label>
+        <select name="DirectorId" class="form-control">
+            <option value="">-- Select Director --</option>
+            @foreach (var director in ViewBag.Directors)
+            {
+                <option value="@director.DirectorId">@director.Name</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label for="LentTo">Lent To</label>
+        <input type="text" name="LentTo" class="form-control" />
+    </div>
+
+    <div>
+        <label for="DateLent">Date Lent</label>
+        <input type="date" name="DateLent" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Edited"></label><br />
+
+        <input asp-for="Edited" type="radio" value="true" id="editedTrue" />
+        <label for="editedTrue">Yes</label>
+
+        <input asp-for="Edited" type="radio" value="false" id="editedFalse" />
+        <label for="editedFalse">No</label>
+    </div>
+
+    <div>
+        <label asp-for="Notes"></label><br />
+        <textarea asp-for="Notes" maxlength="25" class="form-control"></textarea>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
 </form>
