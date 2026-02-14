@@ -1,3 +1,4 @@
+@model MovieReview
 @{
     ViewData["Title"] = "Add Movie";
 }
@@ -5,6 +6,23 @@
 <h1>Add a Movie</h1>
 
 <form>
-    <input type="text"/>
-    <button type="button" onclick="testFunctionality()"></button>
+    <label asp-for="rating">Rating</label>
+    <select asp-for="rating">
+        <option>G</option>
+        <option>PG</option>
+        <option>PG-13</option>
+        <option>R</option>
+    </select>
+    <br/>
+
+    <label asp-for="edited">Edited</label>
+    <input asp-for="edited" type="radio" value="true" id="editedTrue" />
+    <label for="editedTrue">True</label>
+
+    <input asp-for="edited" type="radio" value="false" id="editedFalse" />
+    <label for="editedFalse">False</label>
+    <br/>
+
+    <label asp-for="notes">Notes:</label><br/>
+    <textarea asp-for="notes" maxlength="25"></textarea>
 </form>
